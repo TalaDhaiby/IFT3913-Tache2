@@ -342,6 +342,15 @@ Le workflow Docker snapshot a échoué, mais sa cause n'a pas encore été déte
 
 Ces vérifications montrent l'importance de distinguer les erreurs du code testé des problèmes de configuration ou d'exécution du projet complet.
 
+### Résultat du build Linux Java 17
+
+Le workflow `main jdk17 build` a été exécuté sur la branche `main`, après la correction des deux appels à `SimpleDateFormat` dans le commit `0549c2a`.
+
+Le build a réussi les vérifications du module `tika-core`, qui contient la classe `DateUtils` et nos tests supplémentaires.
+
+L'exécution complète a toutefois échoué après environ 53 minutes, lors des tests d'intégration du module `tika-pipes-s3-integration-tests`, à l'étape Maven Surefire. Cet échec concerne un module distinct de celui étudié dans notre travail.
+
+Les vérifications du module `tika-core` ont donc réussi dans cette exécution, mais le workflow global n'a pas obtenu le statut `BUILD SUCCESS`.
 
 ## Déclaration d'utilisation de l'IA générative
 
