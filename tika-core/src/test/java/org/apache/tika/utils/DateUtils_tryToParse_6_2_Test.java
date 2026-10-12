@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Locale;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ public class DateUtils_tryToParse_6_2_Test {
     public void testTryToParseValidDateWithTime() throws ParseException {
         String dateString = "2023-04-15T12:34:56";
         Date result = dateUtils.tryToParse(dateString);
-        assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateString), result);
+        assertEquals(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT).parse(dateString), result);
     }
 
     @Test
@@ -75,7 +76,7 @@ public class DateUtils_tryToParse_6_2_Test {
     public void testTryToParseInvalidDateWithTime() throws ParseException {
         String dateString = "2023-04-15T12:34:56-12:34:56";
         Date result = dateUtils.tryToParse(dateString);
-        Date expected = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        Date expected = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)
                 .parse("2023-04-15T12:34:56");
         assertEquals(expected, result);
     }
