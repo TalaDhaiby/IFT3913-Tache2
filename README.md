@@ -129,28 +129,28 @@ les tests générés fonctionnels.
 
 ### Documentation des tests générés
 
-ChatUniTest a produit un candidat contenant huit méthodes de test pour `DateUtils.tryToParse()`. Les tests ont été récupérés dans l'historique de génération, intégrés au projet, puis corrigés manuellement lorsque leurs oracles ne correspondaient pas au comportement réel de la méthode.
+ChatUniTest a généré un candidat contenant huit tests pour la méthode `DateUtils.tryToParse()`. Ces tests ont été récupérés, corrigés et intégrés au projet.
 
-Les scénarios couvrent principalement les entrées nulles, les chaînes trop courtes, les dates valides, les dates accompagnées d'une heure ainsi que les entrées contenant des informations supplémentaires ou invalides.
+Le tableau suivant présente, pour chaque test, son intention, les données utilisées et l'oracle retenu après correction.
 
-**Objectifs et choix des données**
+| Test | Intention et motivation des données | Oracle |
+|---|---|---|
+| `testTryToParseNull` | Vérifier la gestion d'une entrée absente en passant `null`. | `assertNull(result)` : aucun objet `Date` ne doit être retourné. |
+| `testTryToParseShortString` | Vérifier le rejet d'une chaîne trop courte avec `"2023"`, qui ne contient pas suffisamment d'informations pour former une date. | `assertNull(result)` : le parseur doit retourner `null`. |
+| `testTryToParseValidDate` | Vérifier l'analyse d'une date valide sans heure avec `"2023-04-15"`. | `assertEquals` avec `2023-04-15T12:00:00Z`, construit à partir d'un `Instant`. |
+| `testTryToParseValidDateWithTime` | Vérifier l'analyse d'une date contenant une heure avec `"2023-04-15T12:34:56"`. | Comparaison avec une date calculée par `SimpleDateFormat`, en précisant `Locale.ROOT`. |
+| `testTryToParseInvalidDate` | Vérifier si le parseur reconnaît la partie valide de `"2023-04-15-12:34:56"` malgré le suffixe non conforme. | Comparaison avec `2023-04-15T12:00:00Z`, puisque le parseur reconnaît la date initiale. |
+| `testTryToParseInvalidDateWithTime` | Vérifier la tolérance du parseur face à des informations horaires supplémentaires dans `"2023-04-15T12:34:56-12:34:56"`. | Comparaison avec la date obtenue par `SimpleDateFormat` pour `"2023-04-15T12:34:56"`, sans le suffixe supplémentaire. |
+| `testTryToParseInvalidDateWithoutTime` | Vérifier l'interprétation de `"2023-04-15-12:34:56"` lorsqu'un suffixe incorrect suit la date. | Comparaison avec `2023-04-15T12:00:00Z`. |
+| `testTryToParseInvalidDateWithoutTimeAndTimezone` | Examiner le traitement de `"2023-04-15-12:34:56"` dans un scénario censé concerner l'absence d'heure et de fuseau horaire. | Comparaison avec `2023-04-15T12:00:00Z`. |
 
-| Scénario | Intention | Motivation des données | Oracle |
-|---|---|---|---|
-| Entrée nulle | Vérifier le comportement lorsque la date est absente. | `null` représente une entrée non fournie. | Le résultat attendu est `null`. |
-| Chaîne trop courte | Vérifier que le parseur rejette une entrée insuffisante. | `2023` ne représente pas une date complète. | Le résultat attendu est `null`. |
-| Date valide | Vérifier la reconnaissance d'une date au format ISO. | `2023-04-15` représente une date valide sans heure explicite. | Comparaison avec une date attendue construite à partir d'un `Instant`. |
-| Date valide avec heure | Vérifier l'interprétation d'une date et d'une heure. | `2023-04-15T12:34:56` contient les composantes d'une date et d'une heure. | Comparaison avec une valeur `Date` attendue. |
-| Date contenant une heure invalide | Observer la gestion d'une entrée dont l'heure est mal formée. | L'entrée contient une date reconnaissable suivie d'une composante horaire incorrecte. | Vérification du comportement réel du parseur, qui peut accepter un préfixe valide. |
-| Date avec des informations horaires supplémentaires | Vérifier comment le parseur traite une chaîne contenant plus d'informations qu'un format reconnu. | Une chaîne avec plusieurs composantes horaires permet d'examiner la tolérance du parseur. | Comparaison avec le résultat correspondant au format effectivement reconnu. |
-| Date invalide sans information de fuseau horaire | Vérifier l'interprétation d'une date malgré une chaîne mal formée. | `2023-04-15-12:34:56` permet notamment de vérifier le comportement associé à midi UTC. | Comparaison avec une date attendue explicite. |
-| Autre entrée mal formée | Vérifier le comportement sur une entrée contenant une structure de date incorrecte. | Les composantes supplémentaires permettent de tester la robustesse du parseur. | Comparaison avec le résultat réellement prévu par l'implémentation. |
+**Analyse critique**
 
-**Limites de la génération**
+Les huit tests ne représentent pas huit comportements distincts. Les méthodes `testTryToParseInvalidDate`, `testTryToParseInvalidDateWithoutTime` et `testTryToParseInvalidDateWithoutTimeAndTimezone` utilisent exactement la même entrée et le même oracle. Elles sont donc redondantes.
 
-Certains tests générés reposaient sur des hypothèses incorrectes, notamment l'idée que toute chaîne mal formée devait être rejetée. D'autres utilisaient des assertions redondantes. Les oracles ont donc été examinés et corrigés avant l'analyse de mutation.
+Les tests générés montrent également certaines limites des oracles automatiques. Les tests utilisant `SimpleDateFormat` pour calculer le résultat attendu sont moins indépendants de l'implémentation, puisque `DateUtils` repose également sur des mécanismes similaires d'analyse de dates.
 
-Ces résultats montrent que la génération automatique peut proposer des scénarios utiles, mais que les assertions produites doivent être validées par rapport au comportement réel et à la spécification du logiciel.
+Les corrections manuelles ont permis d'aligner les assertions sur les comportements réellement observés. Cela illustre l'importance de vérifier les tests produits par l'IA avant de les utiliser pour évaluer la qualité du logiciel.
 
 ### Comparaison des oracles
 
@@ -171,6 +171,8 @@ moins indépendant, puisque `DateUtils` utilise aussi ce mécanisme.
 Pour les cas correspondant à midi UTC, les corrections utilisent une
 date attendue explicite construite avec `Instant`, ce qui évite la
 confusion avec minuit dans le fuseau local.
+
+Les tests utilisant `SimpleDateFormat` précisent désormais `Locale.ROOT` pour éviter de dépendre de la locale par défaut. Toutefois, ils ne fixent pas explicitement le fuseau horaire, ce qui représente une limite potentielle de reproductibilité selon l'environnement d'exécution.
 
 ## Analyse de mutation avec les tests générés corrigés
 
