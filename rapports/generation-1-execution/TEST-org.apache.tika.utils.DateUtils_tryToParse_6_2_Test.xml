@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="1.544" tests="8" errors="0" skipped="0" failures="5" flakes="0">
+  <properties>
+    <property name="os.detected.arch" value="x86_64"/>
+    <property name="java.specification.version" value="22"/>
+    <property name="sun.cpu.isalist" value="amd64"/>
+    <property name="sun.jnu.encoding" value="Cp1252"/>
+    <property name="nisse.jgit.author" value="yogyagamage &lt;47789154+yogyagamage@users.noreply.github.com&gt;"/>
+    <property name="java.class.path" value="C:\Users\talad\Documents\tika-ift3913\tika\tika-core\target\test-classes;C:\Users\talad\Documents\tika-ift3913\tika\tika-core\target\classes;C:\Users\talad\.m2\repository\org\slf4j\slf4j-api\2.0.18\slf4j-api-2.0.18.jar;C:\Users\talad\.m2\repository\commons-io\commons-io\2.22.0\commons-io-2.22.0.jar;C:\Users\talad\.m2\repository\org\commonmark\commonmark\0.30.0\commonmark-0.30.0.jar;C:\Users\talad\.m2\repository\org\commonmark\commonmark-ext-gfm-tables\0.30.0\commonmark-ext-gfm-tables-0.30.0.jar;C:\Users\talad\.m2\repository\org\commonmark\commonmark-ext-gfm-strikethrough\0.30.0\commonmark-ext-gfm-strikethrough-0.30.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.core\6.0.0\org.osgi.core-6.0.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.compendium\5.0.0\org.osgi.compendium-5.0.0.jar;C:\Users\talad\.m2\repository\biz\aQute\bnd\biz.aQute.bndlib\7.3.0\biz.aQute.bndlib-7.3.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.dto\1.0.0\org.osgi.dto-1.0.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.resource\1.0.0\org.osgi.resource-1.0.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.framework\1.8.0\org.osgi.framework-1.8.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.util.tracker\1.5.4\org.osgi.util.tracker-1.5.4.jar;C:\Users\talad\.m2\repository\org\osgi\osgi.annotation\8.0.1\osgi.annotation-8.0.1.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.service.log\1.3.0\org.osgi.service.log-1.3.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.service.repository\1.1.0\org.osgi.service.repository-1.1.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.util.function\1.2.0\org.osgi.util.function-1.2.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.util.promise\1.3.0\org.osgi.util.promise-1.3.0.jar;C:\Users\talad\.m2\repository\biz\aQute\bnd\biz.aQute.bnd.util\7.3.0\biz.aQute.bnd.util-7.3.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.service.serviceloader\1.0.0\org.osgi.service.serviceloader-1.0.0.jar;C:\Users\talad\.m2\repository\org\apache\tika\tika-annotation-processor\4.0.0-SNAPSHOT\tika-annotation-processor-4.0.0-SNAPSHOT.jar;C:\Users\talad\.m2\repository\com\google\guava\guava\33.6.0-jre\guava-33.6.0-jre.jar;C:\Users\talad\.m2\repository\com\google\guava\failureaccess\1.0.3\failureaccess-1.0.3.jar;C:\Users\talad\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\talad\.m2\repository\org\jspecify\jspecify\1.0.0\jspecify-1.0.0.jar;C:\Users\talad\.m2\repository\com\google\errorprone\error_prone_annotations\2.50.0\error_prone_annotations-2.50.0.jar;C:\Users\talad\.m2\repository\com\google\j2objc\j2objc-annotations\3.1\j2objc-annotations-3.1.jar;C:\Users\talad\.m2\repository\com\martensigwart\fakeload\0.7.0\fakeload-0.7.0.jar;C:\Users\talad\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\talad\.m2\repository\org\apache\logging\log4j\log4j-core\2.26.1\log4j-core-2.26.1.jar;C:\Users\talad\.m2\repository\org\apache\logging\log4j\log4j-api\2.26.1\log4j-api-2.26.1.jar;C:\Users\talad\.m2\repository\org\apache\logging\log4j\log4j-slf4j2-impl\2.26.1\log4j-slf4j2-impl-2.26.1.jar;C:\Users\talad\.m2\repository\org\junit\jupiter\junit-jupiter-api\6.1.3\junit-jupiter-api-6.1.3.jar;C:\Users\talad\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\talad\.m2\repository\org\junit\platform\junit-platform-commons\6.1.3\junit-platform-commons-6.1.3.jar;C:\Users\talad\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\talad\.m2\repository\org\junit\jupiter\junit-jupiter-engine\6.1.3\junit-jupiter-engine-6.1.3.jar;C:\Users\talad\.m2\repository\org\junit\platform\junit-platform-engine\6.1.3\junit-platform-engine-6.1.3.jar;C:\Users\talad\.m2\repository\org\mockito\mockito-core\5.23.0\mockito-core-5.23.0.jar;C:\Users\talad\.m2\repository\net\bytebuddy\byte-buddy\1.17.7\byte-buddy-1.17.7.jar;C:\Users\talad\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.7\byte-buddy-agent-1.17.7.jar;C:\Users\talad\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\talad\.m2\repository\org\mockito\mockito-junit-jupiter\5.23.0\mockito-junit-jupiter-5.23.0.jar;"/>
+    <property name="nisse.mvn.minor" value="9"/>
+    <property name="nisse.os.version" value="10.0"/>
+    <property name="java.vm.vendor" value="Oracle Corporation"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="user.variant" value=""/>
+    <property name="nisse.mvn.majorMinor" value="3.9"/>
+    <property name="nisse.jgit.remoteName" value="origin"/>
+    <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="America/Toronto"/>
+    <property name="nisse.os.bitness" value="64"/>
+    <property name="java.vm.specification.version" value="22"/>
+    <property name="os.name" value="Windows 11"/>
+    <property name="nisse.jgit.clean" value="false"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="CA"/>
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-22\bin"/>
+    <property name="sun.java.command" value="C:\Users\talad\AppData\Local\Temp\surefire10723978891780844274\surefirebooter-20261003231707103_3.jar C:\Users\talad\AppData\Local\Temp\surefire10723978891780844274 2026-10-03T23-17-06_913-jvmRun1 surefire-20261003231707103_1tmp surefire_0-20261003231707103_2tmp"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="test" value="DateUtils_tryToParse_6_2_Test"/>
+    <property name="surefire.test.class.path" value="C:\Users\talad\Documents\tika-ift3913\tika\tika-core\target\test-classes;C:\Users\talad\Documents\tika-ift3913\tika\tika-core\target\classes;C:\Users\talad\.m2\repository\org\slf4j\slf4j-api\2.0.18\slf4j-api-2.0.18.jar;C:\Users\talad\.m2\repository\commons-io\commons-io\2.22.0\commons-io-2.22.0.jar;C:\Users\talad\.m2\repository\org\commonmark\commonmark\0.30.0\commonmark-0.30.0.jar;C:\Users\talad\.m2\repository\org\commonmark\commonmark-ext-gfm-tables\0.30.0\commonmark-ext-gfm-tables-0.30.0.jar;C:\Users\talad\.m2\repository\org\commonmark\commonmark-ext-gfm-strikethrough\0.30.0\commonmark-ext-gfm-strikethrough-0.30.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.core\6.0.0\org.osgi.core-6.0.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.compendium\5.0.0\org.osgi.compendium-5.0.0.jar;C:\Users\talad\.m2\repository\biz\aQute\bnd\biz.aQute.bndlib\7.3.0\biz.aQute.bndlib-7.3.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.dto\1.0.0\org.osgi.dto-1.0.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.resource\1.0.0\org.osgi.resource-1.0.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.framework\1.8.0\org.osgi.framework-1.8.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.util.tracker\1.5.4\org.osgi.util.tracker-1.5.4.jar;C:\Users\talad\.m2\repository\org\osgi\osgi.annotation\8.0.1\osgi.annotation-8.0.1.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.service.log\1.3.0\org.osgi.service.log-1.3.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.service.repository\1.1.0\org.osgi.service.repository-1.1.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.util.function\1.2.0\org.osgi.util.function-1.2.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.util.promise\1.3.0\org.osgi.util.promise-1.3.0.jar;C:\Users\talad\.m2\repository\biz\aQute\bnd\biz.aQute.bnd.util\7.3.0\biz.aQute.bnd.util-7.3.0.jar;C:\Users\talad\.m2\repository\org\osgi\org.osgi.service.serviceloader\1.0.0\org.osgi.service.serviceloader-1.0.0.jar;C:\Users\talad\.m2\repository\org\apache\tika\tika-annotation-processor\4.0.0-SNAPSHOT\tika-annotation-processor-4.0.0-SNAPSHOT.jar;C:\Users\talad\.m2\repository\com\google\guava\guava\33.6.0-jre\guava-33.6.0-jre.jar;C:\Users\talad\.m2\repository\com\google\guava\failureaccess\1.0.3\failureaccess-1.0.3.jar;C:\Users\talad\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\talad\.m2\repository\org\jspecify\jspecify\1.0.0\jspecify-1.0.0.jar;C:\Users\talad\.m2\repository\com\google\errorprone\error_prone_annotations\2.50.0\error_prone_annotations-2.50.0.jar;C:\Users\talad\.m2\repository\com\google\j2objc\j2objc-annotations\3.1\j2objc-annotations-3.1.jar;C:\Users\talad\.m2\repository\com\martensigwart\fakeload\0.7.0\fakeload-0.7.0.jar;C:\Users\talad\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\talad\.m2\repository\org\apache\logging\log4j\log4j-core\2.26.1\log4j-core-2.26.1.jar;C:\Users\talad\.m2\repository\org\apache\logging\log4j\log4j-api\2.26.1\log4j-api-2.26.1.jar;C:\Users\talad\.m2\repository\org\apache\logging\log4j\log4j-slf4j2-impl\2.26.1\log4j-slf4j2-impl-2.26.1.jar;C:\Users\talad\.m2\repository\org\junit\jupiter\junit-jupiter-api\6.1.3\junit-jupiter-api-6.1.3.jar;C:\Users\talad\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\talad\.m2\repository\org\junit\platform\junit-platform-commons\6.1.3\junit-platform-commons-6.1.3.jar;C:\Users\talad\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\talad\.m2\repository\org\junit\jupiter\junit-jupiter-engine\6.1.3\junit-jupiter-engine-6.1.3.jar;C:\Users\talad\.m2\repository\org\junit\platform\junit-platform-engine\6.1.3\junit-platform-engine-6.1.3.jar;C:\Users\talad\.m2\repository\org\mockito\mockito-core\5.23.0\mockito-core-5.23.0.jar;C:\Users\talad\.m2\repository\net\bytebuddy\byte-buddy\1.17.7\byte-buddy-1.17.7.jar;C:\Users\talad\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.7\byte-buddy-agent-1.17.7.jar;C:\Users\talad\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\talad\.m2\repository\org\mockito\mockito-junit-jupiter\5.23.0\mockito-junit-jupiter-5.23.0.jar;"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="C:\Users\talad"/>
+    <property name="user.language" value="fr"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="os.detected.version" value="10.0"/>
+    <property name="os.detected.classifier" value="windows-x86_64"/>
+    <property name="java.version.date" value="2024-03-19"/>
+    <property name="java.home" value="C:\Program Files\Java\jdk-22"/>
+    <property name="nisse.jgit.commit" value="a2d75c2c10563b261148e9bafe4046832b33c1a6"/>
+    <property name="os.detected.version.minor" value="0"/>
+    <property name="file.separator" value="\"/>
+    <property name="basedir" value="C:\Users\talad\Documents\tika-ift3913\tika\tika-core"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="nisse.mvn.major" value="3"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="checkstyle.skip" value="true"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="java.awt.headless" value="true"/>
+    <property name="nisse.jgit.branchName" value="main"/>
+    <property name="nisse.compat.osDetector" value="true"/>
+    <property name="nisse.os.arch" value="x86_64"/>
+    <property name="surefire.real.class.path" value="C:\Users\talad\AppData\Local\Temp\surefire10723978891780844274\surefirebooter-20261003231707103_3.jar"/>
+    <property name="user.script" value=""/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="java.runtime.version" value="22+36-2370"/>
+    <property name="user.name" value="talad"/>
+    <property name="nisse.os.version.minor" value="0"/>
+    <property name="nisse.jgit.remoteUrl" value="https://github.com/umontreal-diro/tika.git"/>
+    <property name="stdout.encoding" value="Cp1252"/>
+    <property name="path.separator" value=";"/>
+    <property name="os.detected.version.major" value="10"/>
+    <property name="os.version" value="10.0"/>
+    <property name="nisse.mvn.distributionShortName" value="Maven"/>
+    <property name="nisse.os.version.major" value="10"/>
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
+    <property name="nisse.jgit.committer" value="yogyagamage &lt;47789154+yogyagamage@users.noreply.github.com&gt;"/>
+    <property name="os.detected.bitness" value="64"/>
+    <property name="os.detected.name" value="windows"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
+    <property name="nisse.mvn.distributionId" value="apache-maven"/>
+    <property name="nisse.os.classifier" value="windows-x86_64"/>
+    <property name="localRepository" value="C:\Users\talad\.m2\repository"/>
+    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
+    <property name="java.io.tmpdir" value="C:\Users\talad\AppData\Local\Temp\"/>
+    <property name="java.version" value="22"/>
+    <property name="nisse.mvn.version" value="3.9.11"/>
+    <property name="user.dir" value="C:\Users\talad\Documents\tika-ift3913\tika\tika-core"/>
+    <property name="os.arch" value="amd64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="nisse.mvn.buildNumber" value="3e54c93a704957b63ee3494413a2b544fd3d825b"/>
+    <property name="nisse.jgit.date" value="Mon Aug 31 16:10:23 2026 -0400"/>
+    <property name="sun.os.patch.level" value=""/>
+    <property name="native.encoding" value="Cp1252"/>
+    <property name="java.library.path" value="C:\Program Files\Java\jdk-22\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Users\talad\miniconda3;C:\Users\talad\miniconda3\Library\mingw-w64\bin;C:\Users\talad\miniconda3\Library\usr\bin;C:\Users\talad\miniconda3\Library\bin;C:\Users\talad\miniconda3\Scripts;C:\Users\talad\miniconda3\bin;C:\Users\talad\miniconda3\condabin;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0;C:\windows\System32\OpenSSH;C:\Program Files\nodejs;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Git\cmd;C:\ProgramData\chocolatey\bin;C:\ProgramData\chocolatey\lib\maven\apache-maven-3.9.11\bin;C:\Program Files\GitHub CLI;C:\Program Files\swipl\bin;C:\Program Files\dotnet;C:\Users\talad\.local\bin;C:\Users\talad\AppData\Local\Programs\Python\Launcher;C:\Users\talad\AppData\Local\Microsoft\WindowsApps;C:\Users\talad\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\talad\AppData\Roaming\npm;C:\Users\talad\AppData\Local\JetBrains\IntelliJ IDEA Community Edition 2023.3.2\bin;.;C:\intelFPGA\20.1\modelsim_ase\win32aloem;C:\Users\talad\AppData\Local\Microsoft\WinGet\Packages\OCaml.opam_Microsoft.Winget.Source_8wekyb3d8bbwe;C:\Users\talad\AppData\Local\Microsoft\WinGet\Packages\zig.zig_Microsoft.Winget.Source_8wekyb3d8bbwe\zig-x86_64-windows-0.15.2;C:\Users\talad\.dotnet\tools;C:\Users\talad\AppData\Local\Programs\Ollama;."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="Cp1252"/>
+    <property name="java.vendor" value="Oracle Corporation"/>
+    <property name="java.vm.version" value="22+36-2370"/>
+    <property name="nisse.jgit.shortCommitId" value="a2d75c2"/>
+    <property name="nisse.mvn.distributionName" value="Apache Maven"/>
+    <property name="nisse.os.name" value="windows"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+    <property name="eclipseP2RepoId" value="invalid"/>
+    <property name="java.class.version" value="66.0"/>
+    <property name="nisse.mvn.patch" value="11"/>
+  </properties>
+  <testcase name="testTryToParseNull" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="1.41">
+    <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (C:\Users\talad\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.7\byte-buddy-agent-1.17.7.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+  </testcase>
+  <testcase name="testTryToParseInvalidDateWithTime" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="0.03">
+    <failure message="expected: &lt;null&gt; but was: &lt;Sat Apr 15 12:34:56 EDT 2023&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 12:34:56 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithTime(DateUtils_tryToParse_6_2_Test.java:80)
+]]></failure>
+  </testcase>
+  <testcase name="testTryToParseValidDateWithTime" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="0.015"/>
+  <testcase name="testTryToParseInvalidDate" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="0.006">
+    <failure message="expected: &lt;null&gt; but was: &lt;Sat Apr 15 08:00:00 EDT 2023&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 08:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDate(DateUtils_tryToParse_6_2_Test.java:73)
+]]></failure>
+  </testcase>
+  <testcase name="testTryToParseInvalidDateWithoutTime" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="0.004">
+    <failure message="expected: &lt;null&gt; but was: &lt;Sat Apr 15 08:00:00 EDT 2023&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 08:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithoutTime(DateUtils_tryToParse_6_2_Test.java:87)
+]]></failure>
+  </testcase>
+  <testcase name="testTryToParseValidDate" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="0.005">
+    <failure message="expected: &lt;Sat Apr 15 08:00:00 EDT 2023&gt; but was: &lt;Sat Apr 15 00:00:00 EDT 2023&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <Sat Apr 15 08:00:00 EDT 2023> but was: <Sat Apr 15 00:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1199)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseValidDate(DateUtils_tryToParse_6_2_Test.java:59)
+]]></failure>
+  </testcase>
+  <testcase name="testTryToParseInvalidDateWithoutTimeAndTimezone" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="0.007">
+    <failure message="expected: &lt;null&gt; but was: &lt;Sat Apr 15 08:00:00 EDT 2023&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 08:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithoutTimeAndTimezone(DateUtils_tryToParse_6_2_Test.java:94)
+]]></failure>
+  </testcase>
+  <testcase name="testTryToParseShortString" classname="org.apache.tika.utils.DateUtils_tryToParse_6_2_Test" time="0.004"/>
+</testsuite>

@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------
+Test set: org.apache.tika.utils.DateUtils_tryToParse_6_2_Test
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 1.544 s <<< FAILURE! -- in org.apache.tika.utils.DateUtils_tryToParse_6_2_Test
+org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithTime -- Time elapsed: 0.030 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 12:34:56 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithTime(DateUtils_tryToParse_6_2_Test.java:80)
+
+org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDate -- Time elapsed: 0.006 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 08:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDate(DateUtils_tryToParse_6_2_Test.java:73)
+
+org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithoutTime -- Time elapsed: 0.004 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 08:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithoutTime(DateUtils_tryToParse_6_2_Test.java:87)
+
+org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseValidDate -- Time elapsed: 0.005 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <Sat Apr 15 08:00:00 EDT 2023> but was: <Sat Apr 15 00:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1199)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseValidDate(DateUtils_tryToParse_6_2_Test.java:59)
+
+org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithoutTimeAndTimezone -- Time elapsed: 0.007 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <null> but was: <Sat Apr 15 08:00:00 EDT 2023>
+	at org.junit.jupiter.api.Assertions.assertNull(Assertions.java:308)
+	at org.apache.tika.utils.DateUtils_tryToParse_6_2_Test.testTryToParseInvalidDateWithoutTimeAndTimezone(DateUtils_tryToParse_6_2_Test.java:94)
+

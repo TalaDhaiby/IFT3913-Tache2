@@ -1,0 +1,88 @@
+﻿package org.apache.tika.utils;
+
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import org.mockito.*;
+import org.junit.jupiter.api.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.TimeZone;
+
+@ExtendWith(MockitoExtension.class)
+public class DateUtils_tryToParse_6_2_Test {
+
+    private DateUtils dateUtils;
+
+    @BeforeEach
+    public void setUp() {
+        dateUtils = new DateUtils();
+    }
+
+    @Test
+    public void testTryToParseNull() {
+        String dateString = null;
+        Date result = dateUtils.tryToParse(dateString);
+        assertNull(result);
+    }
+
+    @Test
+    public void testTryToParseShortString() {
+        String dateString = "2023";
+        Date result = dateUtils.tryToParse(dateString);
+        assertNull(result);
+    }
+
+    @Test
+    public void testTryToParseValidDate() throws ParseException {
+        String dateString = "2023-04-15";
+        Date result = dateUtils.tryToParse(dateString);
+        assertEquals(result, new SimpleDateFormat("yyyy-MM-dd").parse(dateString));
+    }
+
+    @Test
+    public void testTryToParseValidDateWithTime() throws ParseException {
+        String dateString = "2023-04-15T12:34:56";
+        Date result = dateUtils.tryToParse(dateString);
+        assertEquals(result, new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(dateString));
+    }
+
+    @Test
+    public void testTryToParseInvalidDate() throws ParseException {
+        String dateString = "2023-04-15-12:34:56";
+        Date result = dateUtils.tryToParse(dateString);
+        assertNull(result);
+    }
+
+    @Test
+    public void testTryToParseInvalidDateWithTime() throws ParseException {
+        String dateString = "2023-04-15T12:34:56-12:34:56";
+        Date result = dateUtils.tryToParse(dateString);
+        assertNull(result);
+    }
+
+    @Test
+    public void testTryToParseInvalidDateWithoutTime() throws ParseException {
+        String dateString = "2023-04-15-12:34:56";
+        Date result = dateUtils.tryToParse(dateString);
+        assertNull(result);
+    }
+
+    @Test
+    public void testTryToParseInvalidDateWithoutTimeAndTimezone() throws ParseException {
+        String dateString = "2023-04-15-12:34:56";
+        Date result = dateUtils.tryToParse(dateString);
+        assertNull(result);
+    }
+}
+

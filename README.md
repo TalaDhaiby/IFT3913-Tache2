@@ -1,3 +1,289 @@
+# IFT3913 — Tâche 2
+
+| Nom et prénom   | Identifiant GitHub |
+| Tala Dhaiby     | TalaDhaiby         |
+| Layla Elshahawy | laylaelshahawy     |
+
+## Première classe sélectionnée
+
+Nous avons choisi `org.apache.tika.utils.DateUtils`, dans le module
+`tika-core`. Cette classe permet notamment d’analyser et de formater
+des dates.
+
+Elle possède déjà des tests, mais sa couverture initiale n’est pas
+complète et certains mutants survivent. Ces résultats justifient
+notre choix pour la génération de tests supplémentaires.
+
+Commit de référence :
+`a2d75c2c10563b261148e9bafe4046832b33c1a6`.
+
+## Environnement et outils
+
+- Windows 11
+- Java 22 ; compilation Maven ciblant Java 17
+- Maven 3.9.11
+- ChatUniTest 2.1.1
+- PIT 1.18.2
+- Plugin PIT pour JUnit 5 : 1.2.2
+- Ollama 0.35.1
+- Modèle ouvert exécuté localement : `qwen2.5-coder:1.5b`
+- RAM : 16 Go
+
+ChatUniTest et PIT ont été ajoutés comme plugins Maven dans
+`tika-core/pom.xml`.
+
+## Résultats initiaux avec les tests originaux
+
+Les tests existants se trouvent notamment dans
+`tika-core/src/test/java/org/apache/tika/metadata/TestMetadata.java`.
+
+Ils exercent `DateUtils` indirectement : `Metadata.getDate()` appelle
+`parseDate()`, qui appelle `DateUtils.tryToParse()`.
+
+Une analyse PIT a été réalisée avec ces tests originaux, sans les
+modifier. PIT mesure une couverture de 37 lignes sur 38, soit environ
+97 %. Sur les 23 mutants générés, 18 sont tués et 5 survivent.
+Le score de mutation initial est donc de 18/23, soit environ 78 %.
+
+Le rapport initial est conservé dans
+`rapports/tests-originaux/pit-reports/`.
+
+## Génération avec ChatUniTest
+
+ChatUniTest utilise le modèle `qwen2.5-coder:1.5b`, exécuté localement
+avec Ollama. Le nom `codeqwen:v1.5-chat` utilisé dans la configuration
+est un alias local de ce modèle, créé pour être accepté par ChatUniTest.
+
+Le modèle de 7 milliards de paramètres a d’abord été essayé, mais son
+chargement a échoué par manque de mémoire disponible. Le modèle de
+1,5 milliard de paramètres a ensuite été utilisé.
+
+La configuration du plugin est la suivante :
+
+```xml
+<plugin>
+  <groupId>io.github.zju-aces-ise</groupId>
+  <artifactId>chatunitest-maven-plugin</artifactId>
+  <version>2.1.1</version>
+  <configuration>
+    <apiKeys>ollama</apiKeys>
+    <model>codeqwen:v1.5-chat</model>
+    <url>http://localhost:11434/v1/chat/completions</url>
+    <testNumber>3</testNumber>
+    <maxRounds>3</maxRounds>
+    <thread>false</thread>
+    <testOutput>${project.basedir}/chatunitest</testOutput>
+    <tmpOutput>${project.build.directory}/chatunitest-info</tmpOutput>
+  </configuration>
+</plugin>
+```
+
+### Résultat de la génération
+
+La génération a duré environ 38 minutes. Elle a traité les quatre
+méthodes publiques de la classe, en comptant les deux surcharges de
+`formatDate` séparément. Trois candidats par méthode ont été tentés,
+avec au maximum trois tours par candidat.
+
+Les journaux indiquent 30 échecs de compilation et 6 échecs
+d’extraction du code. Aucun candidat n’a été validé automatiquement.
+
+L’historique et les messages d’erreur ont été produits sous
+`tika-core/target/chatunitest-info/tika-parent/tika-core/`.
+Le journal de génération est conservé dans
+`rapports/chatunitest-generation-3.log`.
+
+Le candidat `DateUtils_tryToParse_6_2_Test` a été récupéré dans
+l’historique de ChatUniTest, puis intégré manuellement dans :
+
+`tika-core/src/test/java/org/apache/tika/utils/DateUtils_tryToParse_6_2_Test.java`.
+
+Son code avant correction est conservé dans
+`rapports/DateUtils_tryToParse_6_2_Test-original.txt`.
+
+### Compilation, exécution et corrections
+
+Le candidat récupéré compile après ajout des dépendances de test
+`mockito-core` et `mockito-junit-jupiter`. Lors de sa première
+exécution, trois tests réussissent et cinq échouent, sans erreur
+d’exécution. Le contrôle du style du code, Checkstyle, a été désactivé
+pour cette première évaluation.
+
+Les cinq échecs révèlent des oracles incorrects. Quatre supposent que
+le parseur rejette toute chaîne mal formée, alors qu’il peut analyser
+un préfixe de la chaîne. Le cinquième attend minuit dans le fuseau
+local au lieu de midi UTC pour une date sans heure.
+Trois tests utilisent également la même entrée et sont redondants.
+
+Cinq oracles ont été corrigés manuellement. L’ordre attendu/obtenu
+des deux assertions `assertEquals` originales a également été corrigé.
+Ces changements concernent les huit tests du même candidat.
+
+Les imports avec `*` ont été remplacés par des imports explicites,
+et l’extension Mockito inutilisée a été retirée. Les huit tests
+passent ensuite avec Checkstyle activé.
+
+Des interventions manuelles ont donc été nécessaires pour rendre
+les tests générés fonctionnels.
+
+### Comparaison des oracles
+
+Les tests originaux de `TestMetadata` vérifient notamment des dates
+attendues précises, la conversion des fuseaux horaires et la gestion
+des millisecondes. Leurs oracles sont spécifiques aux comportements
+de Tika.
+
+Les tests générés vérifient correctement les entrées nulles et trop
+courtes, mais cinq oracles reposent sur des hypothèses incorrectes.
+Les trois tests redondants n’apportent pas trois comportements
+différents à vérifier.
+
+Pour les dates avec heure, les tests générés utilisent
+`SimpleDateFormat` pour calculer la valeur attendue. Cet oracle est
+moins indépendant, puisque `DateUtils` utilise aussi ce mécanisme.
+
+Pour les cas correspondant à midi UTC, les corrections utilisent une
+date attendue explicite construite avec `Instant`, ce qui évite la
+confusion avec minuit dans le fuseau local.
+
+## Analyse de mutation avec les tests générés corrigés
+
+Avec les tests originaux et les tests générés corrigés, PIT mesure
+une couverture de 38 lignes sur 38, soit 100 %. Il détecte 22 mutants
+sur 23, soit un score de mutation d’environ 96 %. Un mutant survit
+donc encore.
+
+Ce résultat concerne les tests générés après correction manuelle,
+et non le code produit directement par ChatUniTest.
+
+Le rapport est conservé dans
+`rapports/originaux-et-ia-corrigee/pit-reports/`.
+
+### Quatre mutants supplémentaires détectés
+
+Dans le rapport « IA corrigée », PIT attribue la détection des quatre
+mutants supplémentaires au test `testTryToParseInvalidDateWithoutTime`.
+Ce test analyse `2023-04-15-12:34:56` et attend le 15 avril 2023 à
+midi UTC.
+
+À la ligne 63, le mutant inverse la condition `timezone != null`.
+La création des formats tente alors d’appliquer un fuseau `null`,
+ce qui provoque une exception pendant l’initialisation de `DateUtils`.
+
+À la ligne 64, le mutant supprime l’appel à `setTimeZone`. Le format
+utilise alors le fuseau local au lieu du fuseau prévu. Dans notre
+environnement, la date obtenue ne correspond plus à midi UTC,
+ce qui fait échouer l’assertion.
+
+À la ligne 66, le mutant remplace le résultat de `createDateFormat`
+par `null`. La liste contient donc des formats `null`, dont
+l’utilisation provoque une exception lors de l’analyse.
+
+À la ligne 138, le mutant remplace le résultat de `loadDateFormats`
+par une liste vide. Aucun format n’est essayé et l’analyse retourne
+`null`, alors que le test attend une date précise.
+
+Les mutations des lignes 63 et 66 sont donc détectées grâce à une
+exception, tandis que celles des lignes 64 et 138 sont détectées
+par l’assertion sur le résultat attendu.
+
+## Mutant restant et test manuel supplémentaire
+
+Le mutant de la ligne 151 remplace `length() < 6` par `length() <= 6`.
+Il survit aux tests originaux et aux tests générés corrigés.
+
+Le test manuel `testTryToParseExactlySixCharacters`, dans
+`DateUtilsManualTest`, vérifie qu’une date analysable de six caractères
+est acceptée. L’entrée `"23-1-1"` a été choisie pour tester exactement
+cette frontière de longueur. L’oracle `assertNotNull` vérifie que
+l’analyse retourne une date : les formats utilisés par le parseur
+original acceptent cette entrée avec des champs courts.
+
+Avec la condition modifiée, le mutant retourne immédiatement `null`
+pour cette entrée. Le test échoue donc et permet de détecter le mutant.
+
+Le test est enregistré dans :
+
+`tika-core/src/test/java/org/apache/tika/utils/DateUtilsManualTest.java`.
+
+## Résultats finaux
+
+Après ajout du test manuel, PIT mesure une couverture de 38 lignes
+sur 38 et détecte les 23 mutants générés. Le score final est de 100 %,
+contre environ 78 % avec les tests originaux et environ 96 % avec les
+tests originaux et les tests générés corrigés.
+
+Le rapport final est conservé dans
+`rapports/resultat-final/pit-reports/`.
+
+Ce résultat signifie que tous les mutants générés lors de cette
+analyse sont détectés ; il ne garantit pas l’absence de tout défaut.
+
+## Commandes de reproduction
+
+Les commandes Maven ci-dessous sont exécutées depuis `tika-core`.
+Ollama doit être démarré pour la génération.
+
+### Préparer le modèle local
+
+```powershell
+ollama pull qwen2.5-coder:1.5b
+ollama cp qwen2.5-coder:1.5b codeqwen:v1.5-chat
+```
+
+### Générer les tests
+
+```powershell
+mvn "-Djava.version=22.0.0" io.github.zju-aces-ise:chatunitest-maven-plugin:2.1.1:class "-DselectClass=org.apache.tika.utils.DateUtils"
+```
+
+La propriété `java.version=22.0.0` contourne l’erreur de lecture du
+format de version `22` rencontrée avec ChatUniTest. Elle ne change
+pas le JDK utilisé.
+
+### Exécuter tous les tests du module
+
+```powershell
+mvn test
+```
+
+### Analyser les tests originaux
+
+```powershell
+mvn test-compile org.pitest:pitest-maven:mutationCoverage "-DtargetClasses=org.apache.tika.utils.DateUtils" "-DtargetTests=org.apache.tika.metadata.TestMetadata"
+```
+
+### Analyser les tests originaux et les tests générés corrigés
+
+```powershell
+mvn test-compile org.pitest:pitest-maven:mutationCoverage "-DtargetClasses=org.apache.tika.utils.DateUtils" "-DtargetTests=org.apache.tika.metadata.TestMetadata,org.apache.tika.utils.DateUtils_tryToParse_6_2_Test"
+```
+
+### Analyser les trois groupes de tests
+
+```powershell
+mvn test-compile org.pitest:pitest-maven:mutationCoverage "-DtargetClasses=org.apache.tika.utils.DateUtils" "-DtargetTests=org.apache.tika.metadata.TestMetadata,org.apache.tika.utils.DateUtils_tryToParse_6_2_Test,org.apache.tika.utils.DateUtilsManualTest"
+```
+
+Chaque analyse produit ses rapports dans `tika-core/target/pit-reports`.
+Les rapports doivent être conservés séparément avant de lancer
+l’analyse suivante.
+
+## Vérification de l’exécution
+
+Après l’ajout des tests générés corrigés et du test manuel, la commande
+`mvn test` a été exécutée dans le module `tika-core`. Tous les tests
+réussissent et le contrôle Checkstyle passe également `BUILD SUCCESS`.
+
+
+
+
+
+
+
+
+
+# Documentation originale d’Apache Tika
 Welcome to Apache Tika  <https://tika.apache.org/>
 =================================================
 
