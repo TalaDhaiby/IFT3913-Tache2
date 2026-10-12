@@ -1,10 +1,11 @@
-# IFT3913 — Tâche 2
+# IFT3913 — Tâche 2 
 
-| Nom et prénom   | Identifiant GitHub |
-| Tala Dhaiby     | TalaDhaiby         |
-| Layla Elshahawy | laylaelshahawy     |
+| Nom complet | Identifiant GitHub |
+|---|---|
+| Dhaiby, Tala     | TalaDhaiby     |
+| Elshahawy, Layla | laylaelshahawy |
 
-## Première classe sélectionnée
+## Classe sélectionnée
 
 Nous avons choisi `org.apache.tika.utils.DateUtils`, dans le module
 `tika-core`. Cette classe permet notamment d’analyser et de formater
@@ -125,6 +126,31 @@ passent ensuite avec Checkstyle activé.
 
 Des interventions manuelles ont donc été nécessaires pour rendre
 les tests générés fonctionnels.
+
+### Documentation des tests générés
+
+ChatUniTest a produit un candidat contenant huit méthodes de test pour `DateUtils.tryToParse()`. Les tests ont été récupérés dans l'historique de génération, intégrés au projet, puis corrigés manuellement lorsque leurs oracles ne correspondaient pas au comportement réel de la méthode.
+
+Les scénarios couvrent principalement les entrées nulles, les chaînes trop courtes, les dates valides, les dates accompagnées d'une heure ainsi que les entrées contenant des informations supplémentaires ou invalides.
+
+**Objectifs et choix des données**
+
+| Scénario | Intention | Motivation des données | Oracle |
+|---|---|---|---|
+| Entrée nulle | Vérifier le comportement lorsque la date est absente. | `null` représente une entrée non fournie. | Le résultat attendu est `null`. |
+| Chaîne trop courte | Vérifier que le parseur rejette une entrée insuffisante. | `2023` ne représente pas une date complète. | Le résultat attendu est `null`. |
+| Date valide | Vérifier la reconnaissance d'une date au format ISO. | `2023-04-15` représente une date valide sans heure explicite. | Comparaison avec une date attendue construite à partir d'un `Instant`. |
+| Date valide avec heure | Vérifier l'interprétation d'une date et d'une heure. | `2023-04-15T12:34:56` contient les composantes d'une date et d'une heure. | Comparaison avec une valeur `Date` attendue. |
+| Date contenant une heure invalide | Observer la gestion d'une entrée dont l'heure est mal formée. | L'entrée contient une date reconnaissable suivie d'une composante horaire incorrecte. | Vérification du comportement réel du parseur, qui peut accepter un préfixe valide. |
+| Date avec des informations horaires supplémentaires | Vérifier comment le parseur traite une chaîne contenant plus d'informations qu'un format reconnu. | Une chaîne avec plusieurs composantes horaires permet d'examiner la tolérance du parseur. | Comparaison avec le résultat correspondant au format effectivement reconnu. |
+| Date invalide sans information de fuseau horaire | Vérifier l'interprétation d'une date malgré une chaîne mal formée. | `2023-04-15-12:34:56` permet notamment de vérifier le comportement associé à midi UTC. | Comparaison avec une date attendue explicite. |
+| Autre entrée mal formée | Vérifier le comportement sur une entrée contenant une structure de date incorrecte. | Les composantes supplémentaires permettent de tester la robustesse du parseur. | Comparaison avec le résultat réellement prévu par l'implémentation. |
+
+**Limites de la génération**
+
+Certains tests générés reposaient sur des hypothèses incorrectes, notamment l'idée que toute chaîne mal formée devait être rejetée. D'autres utilisaient des assertions redondantes. Les oracles ont donc été examinés et corrigés avant l'analyse de mutation.
+
+Ces résultats montrent que la génération automatique peut proposer des scénarios utiles, mais que les assertions produites doivent être validées par rapport au comportement réel et à la spécification du logiciel.
 
 ### Comparaison des oracles
 
@@ -276,7 +302,54 @@ Après l’ajout des tests générés corrigés et du test manuel, la commande
 réussissent et le contrôle Checkstyle passe également `BUILD SUCCESS`.
 
 
+## Vérification avec GitHub Actions
 
+Après l'intégration des tests générés et du test manuel, nous avons vérifié leur exécution dans GitHub Actions afin d'évaluer leur fonctionnement dans un environnement distinct de l'environnement local.
+
+### Correction d'une incompatibilité avec Forbidden APIs
+
+Lors de la première exécution du workflow `main jdk17 build`, la compilation Maven a échoué pendant la vérification `forbiddenapis:testCheck` du module `tika-core`.
+
+Deux appels au constructeur `SimpleDateFormat(String)` ont été signalés dans `DateUtils_tryToParse_6_2_Test.java`, aux lignes 64 et 78 du fichier avant correction.
+
+Ce constructeur utilise implicitement la locale par défaut du système, ce qui est interdit par les règles de vérification d'Apache Tika.
+
+Nous avons corrigé les deux appels en précisant explicitement `Locale.ROOT` et en ajoutant l'import correspondant :
+
+```java
+import java.util.Locale;
+```
+
+```java
+new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ROOT)
+```
+
+La correction a été enregistrée dans le commit `0549c2a`. Lors de la nouvelle exécution, le build Linux Java 17 a dépassé la vérification qui avait initialement échoué et a poursuivi l'exécution des autres modules du projet.
+
+### Vérifications sur Windows
+
+Les workflows Windows Java 17 ont échoué pendant l'étape `actions/checkout`, avant la compilation et l'exécution des tests.
+
+Les journaux indiquent l'erreur `Filename too long`, causée par certains chemins de fichiers particulièrement longs dans Apache Tika.
+
+Cet échec ne permet donc pas de conclure à un défaut dans les tests de `DateUtils`, puisque ceux-ci n'ont pas été exécutés dans ces workflows.
+
+### Autres vérifications
+
+Le workflow `no split packages` a réussi.
+
+Le workflow Docker snapshot a échoué, mais sa cause n'a pas encore été déterminée. Le succès du workflow `no split packages` ne constitue pas à lui seul une validation des tests unitaires.
+
+Ces vérifications montrent l'importance de distinguer les erreurs du code testé des problèmes de configuration ou d'exécution du projet complet.
+
+
+## Déclaration d'utilisation de l'IA générative
+
+Nous avons utilisé ChatUniTest avec le modèle `qwen2.5-coder:1.5b` via Ollama pour générer des tests unitaires.
+
+ChatGPT a également été utilisé par les deux membres de l'équipe comme outil d'assistance pour la compréhension du projet, la résolution de problèmes techniques, l'analyse des résultats et la rédaction de la documentation.
+
+Les tests et les résultats présentés ont été examinés et validés par notre équipe.
 
 
 
