@@ -1,3 +1,4 @@
+
 name: Semgrep Security Scan
 
 on:
@@ -14,15 +15,30 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install Semgrep
-        run: pip install semgrep
+        run: pip install semgrep==1.185.0
 
-      - name: Scan Tika
-        run: semgrep scan --config p/java --json --output semgrep-report.json tika-core
+      - name: Find baseline
+        run: |
+          echo "BASELINE=$(git merge-base HEAD origin/main)" >> "$GITHUB_ENV"
+
+      - name: Detect new vulnerabilities
+        run: |
+          semgrep scan \
+            --config p/java \
+            --baseline-commit "$BASELINE" \
+            --error \
+            --json \
+            --output semgrep-new.json \
+            tika-core
 
       - name: Save report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: semgrep-report
-          path: semgrep-report.json
+          name: semgrep-new-findings
+          path: semgrep-new.json
+
