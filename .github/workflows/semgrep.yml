@@ -1,0 +1,28 @@
+name: Semgrep Security Scan
+
+on:
+  push:
+    branches: [tache3]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Semgrep
+        run: pip install semgrep
+
+      - name: Scan Tika
+        run: semgrep scan --config p/java --json --output semgrep-report.json tika-core
+
+      - name: Save report
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-report
+          path: semgrep-report.json
