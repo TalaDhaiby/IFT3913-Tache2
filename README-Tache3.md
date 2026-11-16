@@ -1,5 +1,10 @@
 # IFT3913 — Tâche 3 : Analyse de sécurité avec Semgrep
 
+| Nom complet | Identifiant GitHub |
+|---|---|
+| Dhaiby, Tala     | TalaDhaiby     |
+| Elshahawy, Layla | laylaelshahawy |
+
 ## 1. Objectif
 
 L'objectif de cette tâche est d'intégrer Semgrep dans un pipeline GitHub Actions afin de détecter automatiquement les nouvelles vulnérabilités introduites dans un projet Java.
